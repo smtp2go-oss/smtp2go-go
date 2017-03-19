@@ -37,7 +37,7 @@ func api_request(endpoint string, request io.Reader) (*Smtp2goApiResult, error) 
 	// grab the api_root_env, set it if it's empty
 	api_root, found := os.LookupEnv(api_root_env)
 	if !found || len(api_root) == 0 {
-		os.Setenv(api_root_env, "https://api.smtp2go.com/v3")
+		api_root = "https://api.smtp2go.com/v3"
 	}
 
 	// grab the api_key env

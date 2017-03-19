@@ -8,11 +8,11 @@ Go wrapper around the SMTP2GO [/email/send](https://apidoc.smtp2go.com/documenta
 
 ## Installation
 
-`go get https://github.com/smtp2go-oss/smtp2go-go`
+`go get github.com/smtp2go-oss/smtp2go-go`
 
 Add the import in your source file
 
-`import "smtp2go"`
+`import "github.com/smtp2go-oss/smtp2go-go"`
 
 ## Usage
 
@@ -35,44 +35,61 @@ os.Setenv("SMTP2GO_API_KEY", "<your_API_key>")
 Then sending mail is as simple as:
 
 ```
-	import "smtp2go"
-	email := smtp2go.Email{
-		from: "Matt <matt@example.com>",
-		to: []string{
-			"Dave <dave@example.com>"
-		},
-		subject: "Trying out SMTP2GO",
-		text_body: "Test Message",
-		html_body: "<h1>Test Message</h1>",
-	}
-	res, err := smtp2go.Send(email)
+package main
 
+import (
+	"fmt"
+	"github.com/smtp2go-oss/smtp2go-go"
+)
+
+func main() {
+
+	email := smtp2go.Email{
+		From: "Matt <matt@example.com>",
+		To: []string{
+			"Dave <dave@example.com>",
+		},
+		Subject:  "Trying out SMTP2GO",
+		TextBody: "Test Message",
+		HtmlBody: "<h1>Test Message</h1>",
+	}
+	res, err := smtp2go.Send(&email)
+	if err != nil {
+		fmt.Println("An Error Occurred: %s", err)
+	}
+	fmt.Println("Sent Successfully: %s", res)
+}
 ```
 
 You can also send Asynchronously:
 
 ```
-	import "smtp2gp"
+package main
+
+import (
+	"fmt"
+	"github.com/smtp2go-oss/smtp2go-go"
+)
+
+func main() {
 
 	email := smtp2go.Email{
-		from: "Matt <matt@example.com>",
-		to: []string{
-			"Dave <dave@example.com>"
+		From: "Matt <matt@example.com>",
+		To: []string{
+			"Dave <dave@example.com>",
 		},
-		subject: "Trying out SMTP2GO",
-		text_body: "Test Message",
-		html_body: "<h1>Test Message</h1>",
+		Subject:  "Trying out SMTP2GO",
+		TextBody: "Test Message",
+		HtmlBody: "<h1>Test Message</h1>",
 	}
 
 	var c chan smtp2go.SendAsyncResult = smtp2go.SendAsync(email)
 	res := <- c
 	if res.Error != nil {
-		// handle error
+		fmt.Println("An Error Occurred: %s", res.Error)
 	}
-	// use res.Result 
+	fmt.Println("Sent Successfully: %s", res.Result)
 }
-
-
 ```
 
 ## Development
