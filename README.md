@@ -49,30 +49,6 @@ Then sending mail is as simple as:
 
 ```
 
-If you prefer to send asynchronously you can
-call SendAsync instead which will return a bool
-channel to listen to .
-
-```
-	import "smtp2go"
-	email := smtp2go.Email{
-		from: "Matt <matt@example.com>",
-		to: []string{
-			"Dave <dave@example.com>"
-		},
-		subject: "Trying out SMTP2GO",
-		text_body: "Test Message",
-		html_body: "<h1>Test Message</h1>",
-	}
-	c, err := smtp2go.SendAsync(&email)
-	if err != nil {
-		// something went wrong
-	}
-	// <- c to read response
-}
-
-```
-
 ## Development
 
 Clone repo. Run tests with `go test`.
