@@ -83,8 +83,8 @@ func main() {
 		HtmlBody: "<h1>Test Message</h1>",
 	}
 
-	var c chan smtp2go.SendAsyncResult = smtp2go.SendAsync(email)
-	res := <- c
+	var c chan *smtp2go.SendAsyncResult = smtp2go.SendAsync(&email)
+	res := <-c
 	if res.Error != nil {
 		fmt.Println("An Error Occurred: %s", res.Error)
 	}
