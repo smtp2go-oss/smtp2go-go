@@ -36,7 +36,7 @@ Then sending mail is as simple as:
 
 ```
 	import "smtp2go"
-	e := smtp2go.Email{
+	email := smtp2go.Email{
 		from: "Matt <matt@example.com>",
 		to: []string{
 			"Dave <dave@example.com>"
@@ -45,7 +45,33 @@ Then sending mail is as simple as:
 		text_body: "Test Message",
 		html_body: "<h1>Test Message</h1>",
 	}
-	err := smtp2go.Send(e)
+	res, err := smtp2go.Send(email)
+
+```
+
+You can also send Asynchronously:
+
+```
+	import "smtp2gp"
+
+	email := smtp2go.Email{
+		from: "Matt <matt@example.com>",
+		to: []string{
+			"Dave <dave@example.com>"
+		},
+		subject: "Trying out SMTP2GO",
+		text_body: "Test Message",
+		html_body: "<h1>Test Message</h1>",
+	}
+
+	var c chan smtp2go.SendAsyncResult = smtp2go.SendAsync(email)
+	res := <- c
+	if res.Error != nil {
+		// handle error
+	}
+	// use res.Result 
+}
+
 
 ```
 

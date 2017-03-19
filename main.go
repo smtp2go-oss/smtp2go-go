@@ -13,6 +13,11 @@ type Email struct {
 	HtmlBody string   `json:"html_body"`
 }
 
+type SendAsyncResult struct {
+	Error  error
+	Result *Smtp2goApiResult
+}
+
 func Send(e *Email) (*Smtp2goApiResult, error) {
 
 	// check that we have From data
@@ -48,4 +53,17 @@ func Send(e *Email) (*Smtp2goApiResult, error) {
 	}
 
 	return res, nil
+}
+
+func SendAsync(e *Email) chan *SendAsyncResult {
+
+	c := make(chan *SendAsyncResult)
+	go func() {
+		res, err := Send(e)
+		if err != nil {
+			c <- &SendAsyncResult{Error: err}
+		}
+		c <- &SendAsyncResult{Result: res}
+	}()
+	return c
 }
