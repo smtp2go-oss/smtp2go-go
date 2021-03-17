@@ -16,17 +16,20 @@ const api_key_header string = "X-Smtp2go-Api-Key"
 
 var api_key_regex *regexp.Regexp = regexp.MustCompile("^api-[a-zA-Z0-9]{32}$")
 
+// Smtp2goApiResult response payload from the API
 type Smtp2goApiResult struct {
 	RequestId string                `json:"request_id"`
 	Data      Smtp2goApiResult_Data `json:"data"`
 }
 
+// Smtp2goApiResult_Data struct that holds the response data from the API
 type Smtp2goApiResult_Data struct {
 	Error                 string                        `json:"error"`
 	ErrorCode             string                        `json:"error_code"`
 	FieldValidationErrors Smtp2goApiResult_FieldFailure `json:"field_validation_errors"`
 }
 
+// Smtp2goApiResult_FieldFailure if fields failed on the api side this will hold the information
 type Smtp2goApiResult_FieldFailure struct {
 	FieldName string `json:"fieldname"`
 	Message   string `json:"message"`

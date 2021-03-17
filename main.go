@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 )
 
+// Email holds the data used to send the email
 type Email struct {
 	From     string   `json:"sender"`
 	To       []string `json:"to"`
@@ -13,11 +14,13 @@ type Email struct {
 	HtmlBody string   `json:"html_body"`
 }
 
+// SendAsyncResult result struct from async send call
 type SendAsyncResult struct {
 	Error  error
 	Result *Smtp2goApiResult
 }
 
+// Send synchronous send function
 func Send(e *Email) (*Smtp2goApiResult, error) {
 
 	// check that we have From data
@@ -55,9 +58,13 @@ func Send(e *Email) (*Smtp2goApiResult, error) {
 	return res, nil
 }
 
+// SendAsync asynchronous send function
 func SendAsync(e *Email) chan *SendAsyncResult {
 
+	// create the channel to return the results
 	c := make(chan *SendAsyncResult)
+
+	// spin off a goroutine to make the send call
 	go func() {
 		res, err := Send(e)
 		if err != nil {
@@ -65,5 +72,7 @@ func SendAsync(e *Email) chan *SendAsyncResult {
 		}
 		c <- &SendAsyncResult{Result: res}
 	}()
+
+	// finally return the channel
 	return c
 }
