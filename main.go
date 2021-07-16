@@ -12,6 +12,8 @@ type Email struct {
 	Subject  string   `json:"subject"`
 	TextBody string   `json:"text_body"`
 	HtmlBody string   `json:"html_body"`
+	TemplateID string  `json:"template_id"`
+	TemplateData interface{}  `json:"template_data"`
 }
 
 // SendAsyncResult result struct from async send call
@@ -34,13 +36,13 @@ func Send(e *Email) (*Smtp2goApiResult, error) {
 	}
 
 	// check that we have Subject data
-	if len(e.Subject) == 0 {
-		return nil, MissingRequiredFieldError{field: "Subject"}
+	if len(e.Subject) == 0 && len(e.TemplateID) == 0 {
+		return nil, MissingRequiredFieldError{field: "Subject or TemplateID"}
 	}
 
 	// check that we have TextBody data
-	if len(e.TextBody) == 0 {
-		return nil, MissingRequiredFieldError{field: "TextBody"}
+	if len(e.TextBody) == 0 && len(e.TemplateID) == 0 {
+		return nil, MissingRequiredFieldError{field: "TextBody or TemplateID"}
 	}
 
 	// if we get here we have enough information to send
