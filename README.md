@@ -55,9 +55,9 @@ func main() {
 	}
 	res, err := smtp2go.Send(&email)
 	if err != nil {
-		fmt.Println("An Error Occurred: %s", err)
+		fmt.Printf("An Error Occurred: %s", err)
 	}
-	fmt.Println("Sent Successfully: %s", res)
+	fmt.Printf("Sent Successfully: %s", res)
 }
 ```
 
@@ -86,9 +86,9 @@ func main() {
 	var c chan *smtp2go.SendAsyncResult = smtp2go.SendAsync(&email)
 	res := <-c
 	if res.Error != nil {
-		fmt.Println("An Error Occurred: %s", res.Error)
+		fmt.Printf("An Error Occurred: %s", res.Error)
 	}
-	fmt.Println("Sent Successfully: %s", res.Result)
+	fmt.Printf("Sent Successfully: %s", res.Result)
 }
 ```
 
