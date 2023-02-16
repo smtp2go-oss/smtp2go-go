@@ -1,4 +1,4 @@
-[![Crates.io](https://img.shields.io/crates/v/smtp2go.svg)](https://crates.io/crates/smtp2go)
+[![Go Reference](https://pkg.go.dev/badge/github.com/smtp2go-oss/smtp2go-go.svg)](https://pkg.go.dev/github.com/smtp2go-oss/smtp2go-go)
 [![Build Status](https://travis-ci.org/smtp2go-oss/smtp2go-go.svg?branch=master)](https://travis-ci.org/smtp2go-oss/smtp2go-go)
 [![license](https://img.shields.io/github/license/smtp2go-oss/smtp2go-go.svg)]()
 
