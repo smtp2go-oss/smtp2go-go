@@ -3,6 +3,7 @@ package smtp2go
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 )
 
 // Email holds the data used to send the email
@@ -55,6 +56,15 @@ func Send(e *Email) (*Smtp2goApiResult, error) {
 	res, err := api_request("email/send", bytes.NewReader(request_json))
 	if err != nil {
 		return res, err
+	}
+
+	// check if the result has an error
+	if res.Data.Error != "" {
+		fieldError := ""
+		if res.Data.FieldValidationErrors.FieldName != "" {
+			fieldError = res.Data.FieldValidationErrors.Message + "/ "
+		}
+		return nil, &EndpointError{fmt.Errorf("%s - %s%s", fieldError, res.Data.ErrorCode, res.Data.Error)}
 	}
 
 	return res, nil
