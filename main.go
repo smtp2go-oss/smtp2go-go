@@ -8,13 +8,30 @@ import (
 
 // Email holds the data used to send the email
 type Email struct {
-	From         string      `json:"sender"`
-	To           []string    `json:"to"`
-	Subject      string      `json:"subject"`
-	TextBody     string      `json:"text_body"`
-	HtmlBody     string      `json:"html_body"`
-	TemplateID   string      `json:"template_id"`
-	TemplateData interface{} `json:"template_data"`
+	From          string               `json:"sender"`
+	To            []string             `json:"to"`
+	Cc            []string             `json:"cc"`
+	Bcc           []string             `json:"bcc"`
+	Subject       string               `json:"subject"`
+	TextBody      string               `json:"text_body"`
+	HtmlBody      string               `json:"html_body"`
+	TemplateID    string               `json:"template_id"`
+	TemplateData  interface{}          `json:"template_data"`
+	CustomHeaders []*EmailCustomHeader `json:"custom_headers"`
+	Attachments   []*EmailBinaryData   `json:"attachments"`
+	Inlines       []*EmailBinaryData   `json:"inlines"`
+}
+
+type EmailBinaryData struct {
+	Filename string `json:"filename"`
+	Fileblob string `json:"fileblob"`
+	URL      string `json:"url"`
+	MimeType string `json:"mimetype"`
+}
+
+type EmailCustomHeader struct {
+	Header string `json:"header"`
+	Value  string `json:"value"`
 }
 
 // SendAsyncResult result struct from async send call
@@ -47,13 +64,13 @@ func Send(e *Email) (*Smtp2goApiResult, error) {
 	}
 
 	// if we get here we have enough information to send
-	request_json, err := json.Marshal(e)
+	reqJSON, err := json.Marshal(e)
 	if err != nil {
 		return nil, &InvalidJSONError{err: err}
 	}
 
 	// now call to api_request in core to do the http request
-	res, err := api_request("email/send", bytes.NewReader(request_json))
+	res, err := api_request("email/send", bytes.NewReader(reqJSON))
 	if err != nil {
 		return res, err
 	}

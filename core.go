@@ -8,13 +8,13 @@ import (
 	"regexp"
 )
 
-const api_root_env string = "SMTP2GO_API_ROOT"
-const api_key_env string = "SMTP2GO_API_KEY"
-const api_header string = "X-Smtp2go-Api"
-const api_version_header string = "X-Smtp2go-Api-Version"
-const api_key_header string = "X-Smtp2go-Api-Key"
+const APIRootEnv string = "SMTP2GO_API_ROOT"
+const APIKeyEnv string = "SMTP2GO_API_KEY"
+const APIHeader string = "X-Smtp2go-Api"
+const APIVersionHeader string = "X-Smtp2go-Api-Version"
+const APIKeyHeader string = "X-Smtp2go-Api-Key"
 
-var api_key_regex *regexp.Regexp = regexp.MustCompile("^api-[a-zA-Z0-9]{32}$")
+var APIKeyRegexp *regexp.Regexp = regexp.MustCompile("^api-[a-zA-Z0-9]{32}$")
 
 // Smtp2goApiResult response payload from the API
 type Smtp2goApiResult struct {
@@ -38,33 +38,33 @@ type Smtp2goApiResult_FieldFailure struct {
 func api_request(endpoint string, request io.Reader) (*Smtp2goApiResult, error) {
 
 	// grab the api_root_env, set it if it's empty
-	api_root, found := os.LookupEnv(api_root_env)
-	if !found || len(api_root) == 0 {
-		api_root = "https://api.smtp2go.com/v3"
+	apiRoot, found := os.LookupEnv(APIRootEnv)
+	if !found || len(apiRoot) == 0 {
+		apiRoot = "https://api.smtp2go.com/v3"
 	}
 
-	// grab the api_key env
-	api_key, found := os.LookupEnv(api_key_env)
-	if !found || len(api_key) == 0 {
+	// grab the APIKey env
+	APIKey, found := os.LookupEnv(APIKeyEnv)
+	if !found || len(APIKey) == 0 {
 		return nil, MissingAPIKeyError("")
 	}
 
 	// check if the api key is valid
-	if !api_key_regex.MatchString(api_key) {
-		return nil, &IncorrectAPIKeyFormatError{found: api_key}
+	if !APIKeyRegexp.MatchString(APIKey) {
+		return nil, &IncorrectAPIKeyFormatError{found: APIKey}
 	}
 
 	// create the http request client
 	client := &http.Client{}
-	req, err := http.NewRequest("POST", api_root+"/"+endpoint, request)
+	req, err := http.NewRequest("POST", apiRoot+"/"+endpoint, request)
 	if err != nil {
 		return nil, &RequestError{err: err}
 	}
 
 	// add the headers
-	req.Header.Add(api_header, "smtp2go-go")
-	req.Header.Add(api_version_header, "0.1")
-	req.Header.Add(api_key_header, api_key)
+	req.Header.Add(APIHeader, "smtp2go-go")
+	req.Header.Add(APIVersionHeader, "1.0.4")
+	req.Header.Add(APIKeyHeader, APIKey)
 
 	// make the request and grab the response
 	res, err := client.Do(req)

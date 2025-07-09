@@ -7,7 +7,7 @@ type MissingAPIKeyError string
 
 // Error implementation of Error on MissingAPIKeyError
 func (f MissingAPIKeyError) Error() string {
-	return fmt.Sprintf("The %s environment variable was not found, please export it or set it in code prior to api calls", api_key_env)
+	return fmt.Sprintf("The %s environment variable was not found, please export it or set it in code prior to api calls", APIKeyEnv)
 }
 
 // IncorrectAPIKeyFormatError error for bad api key

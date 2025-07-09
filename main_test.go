@@ -57,7 +57,7 @@ func TestMissingTextBodyField(t *testing.T) {
 
 func TestMissingAPIRootEnv(t *testing.T) {
 
-	err := os.Unsetenv(api_root_env)
+	err := os.Unsetenv(APIRootEnv)
 	if err != nil {
 		t.FailNow()
 	}
@@ -77,9 +77,9 @@ func TestMissingAPIRootEnv(t *testing.T) {
 
 func TestMissingAPIKeyEnv(t *testing.T) {
 
-	os.Setenv(api_root_env, "https://test-api.smtp2go.com/v3")
+	os.Setenv(APIRootEnv, "https://test-api.smtp2go.com/v3")
 
-	err := os.Unsetenv(api_key_env)
+	err := os.Unsetenv(APIKeyEnv)
 	if err != nil {
 		t.FailNow()
 	}
